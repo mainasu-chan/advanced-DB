@@ -1,0 +1,55 @@
+DROP DATABASE IF EXISTS 販売管理db;
+
+CREATE DATABASE 販売管理db;
+
+USE 販売管理db;
+
+CREATE TABLE 受注(
+受注番号   CHAR(10) PRIMARY KEY,
+受注年月日 DATE,
+顧客番号   VARCHAR(10),
+受注合計   INT
+);
+
+CREATE TABLE 顧客(
+顧客番号 CHAR(10) PRIMARY KEY,
+顧客名   VARCHAR(30),
+住所     VARCHAR(50),
+電話番号 VARCHAR(15)
+);
+
+CREATE TABLE 受注明細(
+受注番号 CHAR(10),
+商品番号 CHAR( 5),
+数量     INT,
+受注小計 INT,
+PRIMARY KEY(受注番号, 商品番号)
+);
+
+CREATE TABLE 商品(
+商品番号 CHAR(5)PRIMARY KEY,
+商品名   VARCHAR(30),
+単価     INT
+);
+
+INSERT INTO 顧客 VALUES('1001', '株式会社山田貿易', '東京都港区芝浦'        , '03-3256-XXXX');
+INSERT INTO 顧客(顧客番号, 顧客名, 住所) VALUES('1003', '世界商事株式会社', '東京都足立区神明');
+INSERT INTO 顧客 VALUES('1006', '株式会社川野物産', '大阪府大阪市中央区城見', '06-6112-XXXX');
+
+INSERT INTO 受注 VALUES('00001', '2024/04/01', '1001', 640000);
+INSERT INTO 受注 VALUES('00002', '2024/04/02', '1006', 518000);
+INSERT INTO 受注 VALUES('00003', '2024/04/02', '1003', 600000);
+INSERT INTO 受注 VALUES('00004', '2024/04/05', '1001',   3000);
+INSERT INTO 受注 VALUES('00005', '2024/04/05', '1001',  10000);
+
+INSERT INTO 受注明細 VALUES('00001', 'A01',  2, 400000);
+INSERT INTO 受注明細 VALUES('00001', 'G02',  3, 240000);
+INSERT INTO 受注明細 VALUES('00002', 'S05',  6,  18000);
+INSERT INTO 受注明細 VALUES('00002', 'A11', 10, 500000);
+INSERT INTO 受注明細 VALUES('00003', 'A01',  3, 600000);
+INSERT INTO 受注明細 VALUES('00004', 'S05',  1,   3000);
+
+INSERT INTO 商品 VALUES('A01', 'テレビ（液晶大型）', 200000);
+INSERT INTO 商品 VALUES('A11', 'テレビ（液晶小型）', 50000);
+INSERT INTO 商品 VALUES('G02', 'DVDレコーダ'       , 80000);
+INSERT INTO 商品 VALUES('S05', 'ラジオ'            , 3000);
