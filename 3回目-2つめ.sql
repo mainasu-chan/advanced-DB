@@ -59,16 +59,21 @@ WHERE
 
 /*問6　部署ごとの平均給与のすべて以上の給与を支給されている社員をサブクエリを使って取得し、
 　　　給与の高い順に並べ替える（同じ給与の社員が存在した場合は、社員番号の若い順に並べ替える）*/
-SELECT e_no, e_name, salary
-FROM employee
-WHERE d_code <> ''
-  AND salary >= (
-    SELECT AVG(salary)
-    FROM employee AS e2
-    WHERE e2.d_code = employee.d_code
-)
-ORDER BY salary DESC, e_no ASC;
-
+SELECT
+    e.e_no,
+    e.e_name,
+    e.salary
+FROM
+    employee e
+WHERE
+    e.salary >= (
+        SELECT AVG(salary)
+        FROM employee
+        WHERE d_code = e.d_code
+    )
+ORDER BY
+    e.salary DESC,
+    e.e_no ASC;
 
 /*問7　給与が全社員の平均給与のマイナス3万円以上で
 　　　　　　全社員の平均給与のプラス3万円以下の社員をサブクエリを使って取得
@@ -81,28 +86,21 @@ SELECT
 FROM
     employee e
 WHERE
-    e.salary BETWEEN (SELECT AVG(salary) - 30000 FROM employee) AND (SELECT AVG(salary) + 30000 FROM employee);
+    e.salary >= (SELECT AVG(salary) FROM employee) - 30000 AND
+    e.salary <= (SELECT AVG(salary) FROM employee) + 30000;
 /*問8　資格取得者が5人以上いる資格を持つ社員をサブクエリを使って取得
 	表示列：社員番号、氏名*/
-SELECT
+SELECT DISTINCT
     e.e_no,
     e.e_name
 FROM
     employee e
+JOIN
+    get_cert gc ON e.e_no = gc.e_no
 WHERE
-    e.e_no IN (
-        SELECT
-            g.e_no
-        FROM
-            get_cert g
-        JOIN (
-            SELECT
-                c_code
-            FROM
-                get_cert
-            GROUP BY
-                c_code
-            HAVING
-                COUNT(*) >= 5
-        ) AS popular_certs ON g.c_code = popular_certs.c_code
+    gc.c_code IN (
+        SELECT c_code
+        FROM get_cert
+        GROUP BY c_code
+        HAVING COUNT(*) >= 5
     );
