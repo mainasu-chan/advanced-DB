@@ -1,0 +1,43 @@
+/*学籍番号：
+氏　　名：
+--------------------------------------------------
+・学籍番号と氏名を入力してください
+--------------------------------------------------
+
+問1　オートコミットを「OFF」にするコマンド*/
+
+SET AUTOCOMMIT = OFF;
+/*:問2　トランザクション処理の開始コマンド*/
+
+START TRANSACTION;
+/*問3　変更の確定コマンドンド*/
+COMMIT;
+
+/*問4　変更の取り消しコマンドンド*/
+ROLLBACK;
+
+/*問5　employeeデータベース、【cert】テーブルのデータ変更を行う
+　　 トランザクション処理を開始し、
+　　 下記の変更処理をセーブポイントを指定して一連の処理として行う
+　　 ・『データベースSP』の『c_allowance』を22,000円に変更する
+　　 ・『基本情報』の『c_allowance』を10,000円に変更する
+　　 ・『ITパスポート』の『c_allowance』を5,000円に変更する
+　　 ・『ITパスポート』の変更を取り消し、『基本情報』と『データベース』の変更を反映させる
+　　 
+　　 ※上記のSQL文を入力
+　　 　3つのテーブルの変更処理後のデータ一覧を表示し、結果を張り付ける
+　　 　最終処理のデータ一覧を表示し、結果を張り付けるンド*/
+
+START TRANSACTION;
+
+SAVEPOINT it_passport_change;
+
+UPDATE cert SET c_allowance = 22000 WHERE c_name = 'データベースSP';
+
+UPDATE cert SET c_allowance = 10000 WHERE c_name = '基本情報';
+
+UPDATE cert SET c_allowance = 5000 WHERE c_name = 'ITパスポート';
+
+ROLLBACK TO SAVEPOINT it_passport_change;
+
+COMMIT;
