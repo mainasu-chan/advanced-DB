@@ -1,0 +1,66 @@
+学籍番号：
+氏　　名：
+--------------------------------------------------
+・学籍番号と氏名を入力してください
+・SQL文を入力し提出してください
+--------------------------------------------------
+
+問1　test_aテーブル作成
+id	4文字　主キー
+a_code	3文字　空値禁止
+a_name	10文字
+CREATE TABLE test_a (
+    id CHAR(4) PRIMARY KEY,
+    a_code CHAR(3) NOT NULL,
+    a_name VARCHAR(10)
+);
+
+
+
+問2　test_bテーブル作成
+id	4文字　主キー
+b_code	3文字　重複禁止
+b_name	最大20文字
+b_tanka	整数　初期値0
+CREATE TABLE test_b (
+    id CHAR(4) PRIMARY KEY,
+    b_code CHAR(3) UNIQUE,
+    b_name VARCHAR(20),
+    b_tanka INT DEFAULT 0
+);
+
+
+
+問3　test_cテーブル作成
+id	4文字　主キー
+c_code	3文字　重複禁止
+c_name	最大20文字
+c_tanka	整数　100以上を受け付ける
+CREATE TABLE test_c (
+    id CHAR(4) PRIMARY KEY,
+    c_code CHAR(3) UNIQUE,
+    c_name VARCHAR(20),
+    c_tanka INT CHECK (c_tanka >= 100)
+);
+
+
+
+問4　test_aテーブルに、整数型『a_tanka』列を追加
+
+ALTER TABLE test_a ADD COLUMN a_tanka INT;
+問5　test_aテーブルの『a_name』列を20文字に変更
+ALTER TABLE test_a MODIFY COLUMN a_name VARCHAR(20);
+
+問6　下記テーブルにデータを入力する場合、入力できる行に「〇」できない行に「×」を入力
+CREATE TABLE test(
+a int,
+b int,
+c int,
+UNIQUE (a, c));
+
+　　　　　　　　a列　b列　c列　〇or×
+---------------------------------------
+1行目のデータ　　3　　2　　4　　○
+2行目のデータ　　3　　3　　2　　○
+3行目のデータ　　3　　1　　4　　×
+4行目のデータ　　3　　3　　3　　○
