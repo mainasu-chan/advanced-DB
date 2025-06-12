@@ -11,40 +11,41 @@
 
 /*顧客表【customer】*/
 CREATE TABLE customer (
-    顧客番号 VARCHAR(4) PRIMARY KEY,
-    顧客名 VARCHAR(50) NOT NULL,
-    電話番号 VARCHAR(15),
-    住所 VARCHAR(100)
+    cust_code CHAR(3) PRIMARY KEY,
+    cust_name VARCHAR(30) NOT NULL,
+    gender CHAR(1) CHECK (gender IN ('M', 'F')),
+    birthday DATE,
+    flg INTEGER DEFAULT 1
 );
 
 
 /*区分表【category】*/
 CREATE TABLE category (
-    区分コード VARCHAR(3) PRIMARY KEY,
-    区分名 VARCHAR(50) NOT NULL
+    c_code CHAR(1) PRIMARY KEY,
+    c_name VARCHAR(20)
 );
 
 
 /*商品表【goods】*/
 CREATE TABLE goods (
-    商品コード VARCHAR(5) PRIMARY KEY,
-    商品名 VARCHAR(50) NOT NULL,
-    単価 DECIMAL(10, 2) NOT NULL,
-    区分コード VARCHAR(3),
-    FOREIGN KEY (区分コード) REFERENCES category(区分コード)
+    g_code CHAR(4) PRIMARY KEY,
+    g_name VARCHAR(30) NOT NULL,
+    c_code CHAR(1),
+    price INTEGER CHECK (price > 0),
+    FOREIGN KEY (c_code) REFERENCES category(c_code)
 );
 
 
 /*受注表【orders】*/
 CREATE TABLE orders (
-    受注番号 VARCHAR(5) PRIMARY KEY,
-    受注年月日 DATE NOT NULL,
-    顧客番号 VARCHAR(4),
-    受注合計 DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (顧客番号) REFERENCES customer(顧客番号)
+    o_no CHAR(5) PRIMARY KEY,
+    cust_code CHAR(3),
+    g_code CHAR(4),
+    number INTEGER NOT NULL,
+    o_day CHAR(8),
+    FOREIGN KEY (cust_code) REFERENCES customer(cust_code),
+    FOREIGN KEY (g_code) REFERENCES goods(g_code)
 );
-
-
 
 
 /*問2　問1のテーブル作成順を答えなさい*/
